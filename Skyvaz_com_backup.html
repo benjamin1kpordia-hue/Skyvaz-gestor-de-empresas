@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skyvaz: gestão para o seu negócio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef7ef;--card:#fff;--ink:#0f3320;--mut:#4f6f5c;--acc:#38c172;--accink:#06280f;--line:#cfe5d4;--ok:#15803d;--bad:#b3392f;--glow:#bfe8cb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1d12;--card:#11301e;--ink:#e6f5ea;--mut:#8fb09b;--acc:#4ade80;--line:#21452e;--ok:#4ade80;--bad:#ef7c72;--glow:#14472b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a1d12;--card:#11301e;--ink:#e6f5ea;--mut:#8fb09b;--acc:#4ade80;--line:#21452e;--ok:#4ade80;--bad:#ef7c72;--glow:#14472b;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:radial-gradient(820px 440px at 50% -90px,var(--glow),transparent 70%) no-repeat,var(--bg);color:var(--ink);font:16px/1.45 'Bricolage Grotesque',system-ui,-apple-system,sans-serif}
+main{max-width:480px;margin:0 auto;padding:10px 18px 48px;opacity:0;transform:translateY(16px);transition:opacity .7s,transform .7s;pointer-events:none}main.show{opacity:1;transform:none;pointer-events:auto}
+h1{font-size:32px;line-height:1.1;margin:8px 0 6px;font-weight:800;letter-spacing:-.02em}
+h2{font-size:22px;margin:0 0 4px;font-weight:800}
+p{margin:0 0 14px;color:var(--mut)}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:18px;padding:15px;margin-bottom:10px;font:inherit;font-weight:600;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s}
+.opt:hover,.opt:focus-visible{border-color:var(--acc);outline:none;transform:translateY(-2px);box-shadow:0 12px 22px -14px rgba(21,128,61,.8)}.em{background:var(--bg);border-radius:12px;width:46px;height:46px;display:grid;place-items:center;flex:none}
+.opt small{display:block;font-weight:400;color:var(--mut)}
+.em{font-size:26px}
+.prog{height:6px;background:var(--line);border-radius:3px;margin-bottom:22px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--acc);transition:width .3s}
+.btn{background:linear-gradient(135deg,var(--acc),#1fa85a);color:var(--accink);border:0;border-radius:14px;padding:14px 18px;font:inherit;font-weight:800;cursor:pointer;width:100%;box-shadow:0 10px 20px -12px rgba(21,128,61,.9);transition:transform .15s}.btn:active{transform:scale(.98)}
+.btn:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.ghost{background:none;border:0;color:var(--mut);font:inherit;text-decoration:underline;cursor:pointer;padding:8px 0}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+header{display:flex;justify-content:center;padding:22px 18px 8px;position:relative;z-index:5}.brand{display:flex;align-items:center;gap:10px;font:400 38px/1 'Pacifico',cursive,serif;color:var(--ink);will-change:transform}.logo{width:56px;height:auto;flex:none;filter:drop-shadow(0 6px 8px rgba(21,128,61,.35))}@media (prefers-reduced-motion:no-preference){.logo{animation:fl 2.4s ease-in-out infinite}}@keyframes fl{50%{transform:translateY(-4px)}}.hi{color:var(--ok);margin:2px 0 0}#ask{position:fixed;left:50%;top:calc(36% + 66px);transform:translateX(-50%);width:min(320px,86vw);text-align:center;opacity:0;pointer-events:none;transition:opacity .5s;z-index:6}#ask.on{opacity:1;pointer-events:auto}#ask p{color:var(--ink);font-weight:600;font-size:19px;margin:0 0 10px}#ask input{text-align:center;margin-bottom:10px}#load{position:fixed;left:50%;top:calc(36% + 64px);width:140px;height:5px;margin-left:-70px;border-radius:3px;background:var(--line);overflow:hidden;opacity:0;pointer-events:none;z-index:4}#load i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),#1fa85a);border-radius:3px}.seg{display:flex;border:2px solid var(--line);border-radius:20px;overflow:hidden}.seg button{border:0;background:none;color:var(--ink);font:inherit;font-size:13px;font-weight:600;padding:5px 13px;cursor:pointer}.seg button[aria-pressed="true"]{background:var(--acc);color:var(--accink)}.badge{background:var(--acc);color:var(--accink);border-radius:20px;padding:4px 12px;font-weight:800;font-size:14px}
+.tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto}
+.tab{flex:1;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:10px 6px;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 10px 24px -16px rgba(15,90,45,.45)}
+label{display:block;font-weight:600;font-size:14px;margin:10px 0 4px}
+input,select{width:100%;font:inherit;padding:11px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.big{font-size:34px;font-weight:800;letter-spacing:-.02em}
+.item{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}
+.low{color:var(--bad);font-weight:800}.pos{color:var(--ok)}.neg{color:var(--bad)}
+.mods{display:flex;flex-wrap:wrap;gap:6px}.mods span{border:1px dashed var(--mut);border-radius:20px;padding:4px 10px;font-size:13px;color:var(--mut)}
+.dz{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:2px dashed var(--acc);border-radius:16px;padding:18px;cursor:pointer;background:var(--bg);color:var(--ink);font-weight:400;margin:0}.dz.over{background:var(--glow)}.dz small{color:var(--mut)}
+#rst{position:fixed;inset:0;z-index:30;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center}#rst.on{display:flex}#rst .bar{width:min(240px,70vw);height:6px;background:var(--line);border-radius:3px;overflow:hidden}#rst .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),#1fa85a);border-radius:3px;transition:width .6s}#rt{color:var(--ink);font-weight:600;font-size:19px;margin:0;max-width:340px}
+</style>
+</head>
+<body>
+<header><div class="brand" id="brand"><svg class="logo" viewBox="0 0 64 44" aria-hidden="true"><defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8ff5b4"/><stop offset="1" stop-color="#1f9d55"/></linearGradient></defs><path d="M16 40C8 40 3 34 3 28C3 22 8 17 14 17C16 9 23 4 31 4C39 4 45 9 47 16C54 16 60 21 60 28C60 35 55 40 48 40Z" transform="translate(32 0) scale(.5)" fill="#4ade80" opacity=".65"/><path d="M16 40C8 40 3 34 3 28C3 22 8 17 14 17C16 9 23 4 31 4C39 4 45 9 47 16C54 16 60 21 60 28C60 35 55 40 48 40Z" transform="translate(0 6) scale(.85)" fill="url(#cg)"/></svg>Skyvaz</div></header>
+<div id="ask"><p>Qual é o seu nome?</p><input id="nm" placeholder="Digite seu nome" maxlength="30" autocomplete="given-name" aria-label="Seu nome"><button class="btn" id="nok">Continuar</button><button class="ghost" id="nskip">Pular</button></div>
+<div id="load" aria-hidden="true"><i></i></div>
+<div id="rst" role="status" aria-live="polite"><div class="brand"><svg class="logo" viewBox="0 0 64 44" aria-hidden="true"><defs><linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8ff5b4"/><stop offset="1" stop-color="#1f9d55"/></linearGradient></defs><path d="M16 40C8 40 3 34 3 28C3 22 8 17 14 17C16 9 23 4 31 4C39 4 45 9 47 16C54 16 60 21 60 28C60 35 55 40 48 40Z" transform="translate(32 0) scale(.5)" fill="#4ade80" opacity=".65"/><path d="M16 40C8 40 3 34 3 28C3 22 8 17 14 17C16 9 23 4 31 4C39 4 45 9 47 16C54 16 60 21 60 28C60 35 55 40 48 40Z" transform="translate(0 6) scale(.85)" fill="url(#cg2)"/></svg>Skyvaz</div><p id="rt"></p><div class="bar"><i id="rb"></i></div><button class="btn" id="rx" style="display:none;max-width:260px">Voltar</button></div>
+<main id="app"></main>
+<script>
+var N={
+ moda:{e:"👗",n:"Loja de roupas e acessórios",it:"peça",var:"Tamanho e cor",ph:"Ex.: M, azul",prods:[["Camiseta básica",35,79.9,12,"M, branca"],["Vestido midi floral",85,189.9,6,"M, floral"],["Blusa de alça",22,49.9,14,"P, preta"],["Short jeans",45,99.9,9,"38, azul"],["Bermuda masculina",50,119.9,8,"42, bege"],["Jaqueta jeans",110,249.9,4,"M, azul"],["Moletom com capuz",75,169.9,7,"G, cinza"],["Cinto de couro",30,79.9,10,"único, marrom"],["Bolsa transversal",60,139.9,5,"única, preta"],["Meia (par)",4,12.9,40,"único, branca"],["Boné",20,59.9,12,"único, preto"],["Calça jeans",70,159,3,"42, azul"]],mods:["Grade de tamanhos e cores","Trocas e devoluções","Comissão por vendedor","Catálogo no WhatsApp"]},
+ mercado:{e:"🛒",n:"Mercadinho ou mercearia",it:"produto",var:"Validade",ph:"Ex.: 30/12/2026",prods:[["Arroz 5kg",18,27.5,20,"15/03/2027"],["Feijão carioca 1kg",5.5,8.9,30,"10/2027"],["Açúcar refinado 1kg",3.2,4.99,25,"08/2027"],["Óleo de soja 900ml",6,8.49,24,"06/2027"],["Café torrado 500g",14,22.9,15,"09/2027"],["Macarrão espaguete 500g",3,5.49,40,"12/2027"],["Pão de forma",5.5,8.99,10,"10/11/2026"],["Ovos (dúzia)",9,14.5,18,"25/11/2026"],["Refrigerante 2L",5.5,9.49,20,"03/2027"],["Detergente 500ml",1.8,2.99,36,"01/2028"],["Papel higiênico 12 rolos",16,26.9,12,"-"],["Frango congelado 1kg",8,13.9,10,"02/2027"],["Leite integral",4.2,6.5,4,"20/11/2026"]],mods:["Alerta de validade","Venda por peso","Fornecedores e pedidos","Fiado dos clientes"]},
+ beleza:{e:"💇",n:"Salão, barbearia ou estética",it:"serviço ou produto",var:"Profissional",ph:"Ex.: Ana",prods:[["Corte feminino",0,90,9999,"Ana"],["Corte masculino",0,45,9999,"João"],["Barba",0,30,9999,"João"],["Escova",0,60,9999,"Ana"],["Manicure",0,35,9999,"Carla"],["Pedicure",0,40,9999,"Carla"],["Coloração",30,180,9999,"Ana"],["Hidratação",15,90,9999,"Ana"],["Esmalte",5,14.9,20,"-"],["Máscara capilar 500g",35,79.9,6,"-"],["Gel fixador",8,19.9,15,"-"],["Shampoo profissional",25,60,5,"-"]],mods:["Agenda por profissional","Escala e comissão","Lembrete automático","Pacotes e fidelidade"]},
+ saude:{e:"💊",n:"Farmácia ou loja de saúde",it:"produto",var:"Lote e validade",ph:"Ex.: L123, 05/2027",prods:[["Vitamina C",12,24.9,8,"L88, 09/2027"],["Dipirona 500mg (20 comp.)",5,12.9,25,"L12, 03/2028"],["Paracetamol 750mg",4,11.5,30,"L33, 06/2027"],["Ibuprofeno 400mg",7,16.9,18,"L20, 08/2027"],["Álcool em gel 500ml",6,13.9,22,"L56, 12/2027"],["Termômetro digital",14,34.9,6,"-"],["Curativo (caixa)",4,9.9,20,"L90, 2028"],["Soro fisiológico 500ml",3,8.5,24,"L19, 05/2028"],["Shampoo anticaspa",15,32.9,10,"L45, 2027"],["Fralda infantil M",32,59.9,8,"-"],["Escova de dente",3,9.9,30,"-"],["Protetor solar",30,59,2,"L41, 02/2027"]],mods:["Controle de lote","Alerta de vencimento","Receitas e cadastro de cliente","Recompra automática"]},
+ padaria:{e:"🥖",n:"Padaria",it:"produto",var:"Fabricação",ph:"Ex.: hoje",prods:[["Pão francês (kg)",9,18,15,"hoje"],["Pão de queijo (kg)",22,45,8,"hoje"],["Pão de forma",5,9.5,12,"hoje"],["Croissant",3.5,9,15,"hoje"],["Sonho de creme",2.5,7,20,"hoje"],["Broa de milho",1.8,5,18,"hoje"],["Bolo de chocolate (fatia)",3,8.5,16,"hoje"],["Café com leite",2,6.5,9999,"-"],["Pão na chapa",2.5,7.5,9999,"-"],["Leite 1L",4.5,6.9,15,"11/2026"],["Presunto (100g)",3,6.5,10,"-"],["Bolo de cenoura",12,30,3,"hoje"]],mods:["Produção do dia","Perdas e sobras","Encomendas","Venda por peso"]},
+ pizza:{e:"🍕",n:"Pizzaria",it:"item do cardápio",var:"Tamanho",ph:"Ex.: grande",prods:[["Pizza calabresa",18,55,9999,"grande"],["Pizza margherita",16,52,9999,"grande"],["Pizza portuguesa",20,59,9999,"grande"],["Pizza quatro queijos",22,62,9999,"grande"],["Pizza frango com catupiry",19,58,9999,"grande"],["Pizza doce de chocolate",15,50,9999,"média"],["Pizza broto",8,28,9999,"broto"],["Coca-Cola 2L",7.5,13,24,"-"],["Guaraná lata",2.8,6.5,30,"-"],["Cerveja long neck",5,12,36,"-"],["Borda recheada (adicional)",4,10,9999,"-"],["Refrigerante 2L",6,12,10,"-"]],mods:["Cardápio digital","Pedidos pelo WhatsApp","Entregadores e taxa de entrega","Ficha técnica e custo"]},
+ acai:{e:"🍧",n:"Açaí e sorveteria",it:"item",var:"Tamanho",ph:"Ex.: 500ml",prods:[["Açaí 300ml",5,14,9999,"300ml"],["Açaí 500ml",8,22,9999,"500ml"],["Açaí 700ml",11,29,9999,"700ml"],["Milkshake 400ml",6,16,9999,"400ml"],["Sorvete 1 bola",2.5,7,9999,"-"],["Adicional de leite ninho",2,5,40,"-"],["Adicional de morango",2,5,25,"-"],["Adicional de banana",1,3,25,"-"],["Água de coco",3,8,30,"-"],["Granola (kg)",12,30,4,"-"]],mods:["Monte seu copo","Controle de adicionais","Venda por peso","Pedidos de delivery"]},
+ doceria:{e:"🍰",n:"Doceria, bolos e salgados",it:"item",var:"Data da encomenda",ph:"Ex.: 15/11",prods:[["Brigadeiro (cento)",35,90,9999,"sob encomenda"],["Beijinho (cento)",35,90,9999,"sob encomenda"],["Bolo de aniversário 1kg",30,85,9999,"sob encomenda"],["Cupcake",3.5,9,30,"-"],["Torta de limão (fatia)",4,11,12,"-"],["Brownie",3,8.5,24,"-"],["Salgado assado (cento)",40,100,9999,"sob encomenda"],["Pão de mel",3,8,20,"-"],["Trufa",2.5,6.5,30,"-"],["Caixa de bombons 250g",18,45,10,"-"],["Bolo 1kg",25,70,2,"sob encomenda"]],mods:["Encomendas com data de entrega","Sinal e pagamento parcial","Ficha técnica e custo","Catálogo no WhatsApp"]},
+ hortifruti:{e:"🥬",n:"Hortifruti e feira",it:"produto",var:"Colheita",ph:"Ex.: hoje",prods:[["Banana (kg)",3,7,25,"hoje"],["Maçã (kg)",5,10,20,"hoje"],["Laranja (kg)",2,5,40,"hoje"],["Batata (kg)",3,6.5,30,"hoje"],["Cebola (kg)",3,6,25,"hoje"],["Cenoura (kg)",2.5,6,20,"hoje"],["Alface (un)",1.5,4,15,"hoje"],["Limão (kg)",4,8,15,"hoje"],["Abacaxi (un)",4,9,10,"hoje"],["Mamão (kg)",4,8.5,12,"hoje"],["Melancia (kg)",1.5,3.9,30,"hoje"],["Cheiro-verde (maço)",1,3,20,"hoje"],["Tomate (kg)",4,9,3,"ontem"]],mods:["Venda por peso","Controle de perdas","Preço do dia","Fornecedores"]},
+ acougue:{e:"🥩",n:"Açougue e peixaria",it:"corte",var:"Validade",ph:"Ex.: 05/11",prods:[["Picanha (kg)",55,89,12,"05/11"],["Alcatra (kg)",38,62,14,"06/11"],["Contrafilé (kg)",40,65,10,"06/11"],["Costela bovina (kg)",20,34,15,"07/11"],["Carne moída (kg)",22,36,20,"04/11"],["Linguiça toscana (kg)",14,24,18,"10/11"],["Peito de frango (kg)",12,19.9,20,"05/11"],["Coxa e sobrecoxa (kg)",7,12.9,25,"05/11"],["Costelinha suína (kg)",16,27,12,"08/11"],["Filé de tilápia (kg)",20,36,10,"06/11"],["Salmão (kg)",50,89,5,"04/11"],["Carvão 3kg",9,19.9,12,"-"],["Frango inteiro (kg)",10,16,3,"03/11"]],mods:["Venda por peso","Câmara fria e validade","Rendimento por corte","Fornecedores"]},
+ marmita:{e:"🍱",n:"Marmitas e refeições",it:"marmita",var:"Tamanho",ph:"Ex.: M 500g",prods:[["Marmita tradicional (PF)",9,20,40,"M 500g"],["Marmita grande",12,26,30,"G 750g"],["Marmita fit frango grelhado",10,24,25,"M 500g"],["Marmita fit tilápia",13,28,15,"M 500g"],["Feijoada (sábado)",14,30,20,"G 750g"],["Strogonoff de frango",10,23,20,"M 500g"],["Macarrão à bolonhesa",8,19,20,"M 500g"],["Marmita vegetariana",9,22,12,"M 500g"],["Parmegiana de frango",12,27,18,"G 750g"],["Suco natural 300ml",2.5,7,30,"Bebida"],["Refrigerante lata",2.8,6,36,"Bebida"],["Sobremesa (pudim)",3,8,15,"Sobremesa"],["Taxa de entrega",0,5,9999,"-"]],mods:["Cardápio da semana","Pedidos por WhatsApp","Assinatura semanal (pacotes)","Rotas e taxa de entrega"]},
+ comida:{e:"🍔",n:"Restaurante, lanchonete ou delivery",it:"item do cardápio",var:"Categoria",ph:"Ex.: Lanche",prods:[["X-Burger",9,28,40,"Lanche"],["X-Salada",11,32,60,"Lanche"],["X-Bacon",14,36,50,"Lanche"],["Hot dog",6,16,40,"Lanche"],["Porção de batata frita",8,24,30,"Porção"],["Prato feito (PF)",12,28,40,"Prato"],["Suco natural 500ml",3,10,30,"Bebida"],["Água mineral 500ml",1,4,40,"Bebida"],["Pudim (fatia)",3,9,12,"Sobremesa"],["Coxinha",2.5,7,35,"Salgado"],["Café expresso",1.5,5,9999,"Bebida"],["Refrigerante lata",2.5,6,6,"Bebida"]],mods:["Cardápio digital","Pedidos pelo WhatsApp","Ficha técnica e custo","Mesas e comandas"]},
+ geral:{e:"🏪",n:"Outro tipo de negócio",it:"produto",var:"Observação",ph:"Opcional",prods:[["Produto exemplo",10,25,10,""],["Carregador USB",12,29.9,15,""],["Fone de ouvido",18,49.9,10,""],["Caderno 96 folhas",7,16.9,20,""],["Caneta (caixa 50)",30,59.9,5,""],["Garrafa térmica",35,79.9,8,""]],mods:["Catálogo digital","Clientes e histórico","Contas a pagar e receber","Relatórios"]}
+};
+var FOOD=["mercado","padaria","comida","marmita","pizza","acai","doceria","hortifruti","acougue"];
+var QF={k:"tipo",t:"Que tipo de negócio de alimentos?",s:"Cada um ganha módulos próprios.",o:FOOD.map(function(k){return[k,N[k].e,N[k].n,""]})};
+var Q=[
+ {k:"tipo",t:"O que você vende?",s:"Vamos montar o app para o seu tipo de negócio.",o:[["alimento","🍽️","Alimentos e bebidas","Mercado, padaria, marmitas, pizzaria e mais"]].concat(Object.keys(N).filter(function(k){return FOOD.indexOf(k)<0}).map(function(k){return[k,N[k].e,N[k].n,""]}))},
+ {k:"eq",t:"Quantas pessoas trabalham com você?",s:"Define se o app precisa de equipe e escalas.",o:[["so","🙋","Só eu","Eu faço tudo"],["peq","👥","2 a 5 pessoas","Equipe pequena"],["grd","🏢","6 ou mais","Ou mais de uma unidade"]]},
+ {k:"dor",t:"Qual dor pesa mais hoje?",s:"Vai ser a primeira tela do seu app.",o:[["vendas","🧾","Não sei quanto vendi","Falta registro de vendas"],["estoque","📦","Estoque bagunçado","Caderno e planilha"],["caixa","💰","Não sei meu lucro","Dinheiro misturado"]]}
+];
+var S={step:0,ans:{},tab:"vendas",prods:[],vendas:[],gastos:[],staff:["Eu"]};
+var app=document.getElementById("app");
+var K="skyvaz:v1";
+function hoje(){return new Date().toLocaleDateString("en-CA")}
+function sum(a,k){return a.reduce(function(x,v){return x+v[k]},0)}
+function save(){try{localStorage.setItem(K,JSON.stringify({ans:S.ans,tab:S.tab,prods:S.prods,vendas:S.vendas,gastos:S.gastos,staff:S.staff,pay:S.pay||[],promo:S.promo||[],hist:S.hist||[],dia:S.dia||hoje()}))}catch(e){}}
+function load(){try{var d=JSON.parse(localStorage.getItem(K)||"null");if(!d||!d.ans||!N[d.ans.tipo])return false;d.hist=d.hist||[];
+ if(d.dia!==hoje()){if(d.vendas.length||d.gastos.length)d.hist.unshift({d:d.dia,r:sum(d.vendas,"t"),l:sum(d.vendas,"l"),g:sum(d.gastos,"v")});d.vendas=[];d.gastos=[];d.dia=hoje()}
+ d.hist=d.hist.slice(0,400);Object.keys(d).forEach(function(k){S[k]=d[k]});return true}catch(e){return false}}
+function brand(){return ''}
+function fmt(v){return Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+var MES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+function pay(i){S.pay=S.pay||[];return S.pay[i]=S.pay[i]||{s:0,d:[]}}
+function PR(){S.promo=S.promo||[];return S.promo}
+function ativa(x){return x.on&&(!x.d||x.d==hoje())}
+function preco(p){var i=S.prods.indexOf(p),b=0;PR().forEach(function(x){if(ativa(x)&&(x.all||x.it.indexOf(i)>=0)&&x.p>b)b=x.p});return{p:+(p.p*(1-b/100)).toFixed(2),x:b}}
+function banner(){var a=PR().filter(ativa),b=bkBanner();if(!a.length)return b;return b+'<div class="card" style="border-color:var(--acc);border-width:2px"><b>Promoção ativa hoje</b>'+a.map(function(x){return '<div class="item"><span>'+esc(x.n)+'</span><b>-'+x.p+'%</b></div>'}).join("")+'</div>'}
+function promoForm(x,i){
+ var h='<div class="item" style="display:block" id="pf"><label for="fn">Nome</label><input id="fn" value="'+esc(x.n)+'" placeholder="Ex.: Black Friday"><label for="ft">Tipo</label><select id="ft">';
+ ["Feriado","Dia de desconto","Oferta explosiva"].forEach(function(t){h+='<option'+(t==x.t?' selected':'')+'>'+t+'</option>'});
+ h+='</select><div class="row"><div><label for="fd">Data (vazio = todo dia)</label><input id="fd" type="date" value="'+x.d+'"></div><div><label for="fp">Desconto (%)</label><input id="fp" type="number" min="1" max="90" inputmode="numeric" value="'+x.p+'"></div></div>';
+ h+='<label for="fa">Vale para</label><select id="fa"><option value="1"'+(x.all?' selected':'')+'>Todos os produtos</option><option value="0"'+(x.all?'':' selected')+'>Só os produtos que eu marcar</option></select><div id="fl" style="max-height:200px;overflow:auto;margin-top:8px'+(x.all?';display:none':'')+'">';
+ S.prods.forEach(function(p,k){h+='<label style="display:flex;gap:8px;align-items:center;font-weight:400"><input type="checkbox" style="width:auto" data-fk="'+k+'"'+(x.it.indexOf(k)>=0?' checked':'')+'>'+esc(p.n)+'</label>'});
+ return h+'</div><p id="pfm" style="margin:8px 0" role="status"></p><button class="btn" id="fsave">Salvar promoção</button><div class="row"><button class="ghost" id="fcan">Cancelar</button>'+(i==="new"?'':'<button class="ghost" id="fdel">Excluir</button>')+'</div></div>'}
+function promoCard(){
+ var P=PR(),h='<div class="card"><h2>Promoções e dias de desconto</h2><p>Feriados e ofertas que baixam o preço sozinhos. Você escolhe quanto desconta e em quais produtos.</p>';
+ if(!P.length)h+='<p>Nenhuma promoção ainda.</p>';
+ P.forEach(function(x,i){
+  if(S.pr===i){h+=promoForm(x,i);return}
+  var d=x.d?x.d.split("-").reverse().join("/"):"Todos os dias",qt=x.all?"Todos os produtos":x.it.length+" produto(s)";
+  h+='<div class="item"><span><b>'+esc(x.n)+'</b><br><small style="color:var(--mut)">'+esc(x.t)+' | '+d+' | '+qt+'</small></span><span style="text-align:right"><b class="'+(x.on?"pos":"")+'">-'+x.p+'%</b><br><button class="ghost" data-pt="'+i+'">'+(x.on?'Desligar':'Ligar')+'</button> <button class="ghost" data-pr="'+i+'">Editar</button></span></div>'});
+ if(S.pr==="new")h+=promoForm({n:"",t:"Oferta explosiva",d:"",p:10,all:true,it:[],on:true},"new");
+ else h+='<button class="btn" id="pnew" style="margin-top:12px">Nova promoção</button>';
+ return h+'</div>'}
+function histo(){
+ var t=totals(),L=(S.hist||[]).slice(),mes=S.hv=="mes",rows=L;
+ if(S.vendas.length||S.gastos.length)L.unshift({d:S.dia||hoje(),r:t.r,l:t.l,g:t.g});
+ if(mes){var m={};L.forEach(function(x){var k=x.d.slice(0,7);m[k]=m[k]||{d:k,r:0,l:0,g:0};m[k].r+=x.r;m[k].l+=x.l;m[k].g+=x.g});rows=Object.keys(m).sort().reverse().map(function(k){return m[k]})}
+ var h='<div class="card"><div class="top" style="margin-bottom:4px"><h2 style="margin:0">Histórico</h2><span class="seg"><button data-hv="dia" aria-pressed="'+!mes+'">Dia</button><button data-hv="mes" aria-pressed="'+mes+'">Mês</button></span></div><p style="font-size:14px">Quanto sobrou: lucro das vendas menos gastos.</p>';
+ if(!rows.length)h+='<p style="margin:0">Aparece aqui depois da primeira venda.</p>';
+ rows.slice(0,mes?12:31).forEach(function(x){var s=x.l-x.g,lb=mes?MES[+x.d.slice(5)-1]+" de "+x.d.slice(0,4):x.d.split("-").reverse().join("/");h+='<div class="item"><span>'+lb+'<br><small style="color:var(--mut)">Vendeu '+fmt(x.r)+'</small></span><b class="'+(s>=0?"pos":"neg")+'">'+fmt(s)+'</b></div>'});
+ return h+'</div>'}
+function descCard(){
+ var h='<div class="card"><h2>Desconto de salário</h2><p>Salário base menos faltas, vales e adiantamentos.</p>';
+ S.staff.forEach(function(s,i){if(!i)return;var p=pay(i),d=sum(p.d,"v"),dl="";
+  p.d.forEach(function(x,j){dl+='<div class="item"><span><small style="color:var(--mut)">'+esc(x.n)+'</small></span><span>- '+fmt(x.v)+' <button class="ghost" data-rd="'+i+'-'+j+'">Remover</button></span></div>'});
+  h+='<div class="item" style="display:block"><b>'+esc(s)+'</b><label for="sal'+i+'">Salário base (R$)</label><input id="sal'+i+'" data-sal="'+i+'" type="number" step="0.01" inputmode="decimal" value="'+p.s+'">'+dl+'<div style="display:flex;justify-content:space-between;margin-top:8px"><span>A receber</span><b class="'+(p.s-d>=0?"pos":"neg")+'">'+fmt(p.s-d)+'</b></div></div>'});
+ h+='<h2 style="margin-top:14px">Novo desconto</h2><label for="dp">Funcionário</label><select id="dp">';
+ S.staff.forEach(function(s,i){if(i)h+='<option value="'+i+'">'+esc(s)+'</option>'});
+ return h+'</select><label for="dn">Motivo</label><input id="dn" placeholder="Ex.: falta, vale, adiantamento"><label for="dv">Valor (R$)</label><input id="dv" type="number" step="0.01" inputmode="decimal"><p id="dmsg" style="margin:8px 0" role="status"></p><button class="btn" id="dadd">Aplicar desconto</button></div>'}
+
+var BK="skyvaz:bk";
+function bkDias(){var t=0;try{t=+localStorage.getItem(BK)||0}catch(e){}return t?Math.floor((Date.now()-t)/864e5):null}
+function bkMark(){try{localStorage.setItem(BK,String(Date.now()))}catch(e){}}
+function bkTxt(){var d=bkDias();return d===null?"Você ainda não fez backup.":(d===0?"Último backup: hoje.":"Último backup: há "+d+" dia(s).")}
+function bkBanner(){var d=bkDias();if(!S.prods.length||(d!==null&&d<7))return"";return '<div class="card" style="border-color:var(--acc);border-width:2px"><b>Faça um backup</b><p style="margin:4px 0">'+(d===null?"Você ainda não salvou nenhum backup.":"Seu último backup foi há "+d+" dias.")+' Vá em Mais e toque em Salvar backup.</p></div>'}
+function backupCard(){return '<div class="card"><h2>Backup dos dados</h2><p>Seus dados ficam só neste aparelho. Salve uma cópia para não perder vendas, estoque e histórico.</p><p id="bki" style="margin:8px 0"><b>'+bkTxt()+'</b></p><button class="btn" id="bksave">Salvar backup</button>'+(navigator.canShare?'<button class="ghost" id="bkshare">Enviar backup (WhatsApp, Drive...)</button>':'')+'<h2 style="margin-top:16px">Restaurar backup</h2>'+dropZone()+'<p id="bkm" style="margin:8px 0" role="status"></p></div>'}
+function bkFile(){save();var d=null;try{d=JSON.parse(localStorage.getItem(K)||"null")}catch(e){}
+ return new File([JSON.stringify({app:"skyvaz",v:1,em:new Date().toISOString(),nome:NOME,dados:d})],"skyvaz-backup-"+hoje()+".json",{type:"application/json"})}
+function bkBind(){
+ dzBind();
+ function bm(t){var m=document.getElementById("bkm");if(m)m.textContent=t}
+ function done(){bkMark();var i=document.getElementById("bki");if(i)i.innerHTML="<b>"+bkTxt()+"</b>"}
+ var sv=document.getElementById("bksave");if(!sv)return;
+ sv.onclick=function(){try{var f=bkFile(),u=URL.createObjectURL(f),a=document.createElement("a");a.href=u;a.download=f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);done();bm("Backup salvo: "+f.name+". Guarde em um lugar seguro.")}catch(e){bm("Não foi possível salvar o backup neste navegador.")}};
+ var sh=document.getElementById("bkshare");
+ if(sh)sh.onclick=function(){try{var f=bkFile();if(!navigator.canShare({files:[f]})){bm("Este aparelho não permite enviar arquivos. Use Salvar backup.");return}
+  navigator.share({files:[f],title:"Backup Skyvaz"}).then(function(){done();bm("Backup enviado.")}).catch(function(){})}catch(e){bm("Não foi possível enviar. Use Salvar backup.")}};
+
+}
+
+function dropZone(){return '<div class="dz" id="dz" role="button" tabindex="0"><span style="font-size:28px">📂</span><b>Toque aqui ou arraste o arquivo de backup</b><small>Arquivo .json salvo pelo Skyvaz. Substitui os dados atuais.</small></div><input id="bkfile" type="file" accept=".json,application/json" style="display:none">'}
+function dzBind(){var z=document.getElementById("dz"),f=document.getElementById("bkfile");if(!z||!f)return;
+ z.onclick=function(){f.click()};
+ z.onkeydown=function(e){if(e.key=="Enter"||e.key==" "){e.preventDefault();f.click()}};
+ ["dragenter","dragover"].forEach(function(n){z.addEventListener(n,function(e){e.preventDefault();z.classList.add("over")})});
+ z.addEventListener("dragleave",function(){z.classList.remove("over")});
+ z.addEventListener("drop",function(e){e.preventDefault();z.classList.remove("over");var x=e.dataTransfer&&e.dataTransfer.files[0];if(x)bkRestore(x)});
+ f.onchange=function(){var x=f.files[0];f.value="";if(x)bkRestore(x)}}
+function bkRestore(file){
+ var R=document.getElementById("rst"),T=document.getElementById("rt"),B=document.getElementById("rb"),X=document.getElementById("rx");
+ function step(t,p){T.textContent=t;B.style.width=p+"%"}
+ function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+ R.classList.add("on");X.style.display="none";B.style.width="0%";step("Lendo o arquivo…",10);
+ new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(r.result)};r.onerror=function(){no("Não foi possível ler o arquivo.")};r.readAsText(file)})
+ .then(function(txt){step("Analisando o backup…",35);return wait(800).then(function(){
+   var o;try{o=JSON.parse(txt)}catch(e){throw "Esse arquivo não é um backup válido."}
+   var d=o&&o.dados;if(!o||o.app!=="skyvaz"||!d)throw "Esse arquivo não é um backup do Skyvaz.";
+   if(!d.ans||!N[d.ans.tipo]||!Array.isArray(d.prods)||!Array.isArray(d.vendas)||!Array.isArray(d.gastos))throw "O backup está incompleto ou danificado.";
+   if(d.prods.some(function(p){return !p||typeof p.n!=="string"||isNaN(+p.p)||isNaN(+p.q)}))throw "Há produtos danificados no backup.";
+   return o})})
+ .then(function(o){var d=o.dados,dt=o.em?o.em.slice(0,10).split("-").reverse().join("/"):"data desconhecida";
+   step("Backup de "+dt+" encontrado: "+d.prods.length+" produtos.",60);
+   return wait(1200).then(function(){step("Restaurando seus dados…",85);return wait(1000)}).then(function(){
+    localStorage.setItem(K,JSON.stringify(d));
+    if(o.nome){localStorage.setItem(NK,o.nome);localStorage.removeItem(NK+"s")}else{localStorage.removeItem(NK);localStorage.setItem(NK+"s","1")}
+    bkMark();step("Pronto!",100);return wait(700)}).then(function(){location.reload()})})
+ .catch(function(e){step(typeof e==="string"?e:"Não foi possível restaurar o backup neste navegador.",0);X.style.display="";X.onclick=function(){R.classList.remove("on");X.style.display="none"}})}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function quiz(){
+ var q=(S.step==0&&S.food)?QF:Q[S.step],h=brand()+'<div class="prog"><i style="width:'+(S.step/Q.length*100)+'%"></i></div>';
+
+ if(S.step==0&&NOME)h+='<h2 class="hi">Olá, '+esc(NOME)+'! 👋</h2>';h+='<h1>'+q.t+'</h1><p>'+q.s+'</p>';
+ q.o.forEach(function(o){h+='<button class="opt" data-v="'+o[0]+'"><span class="em">'+o[1]+'</span><span>'+o[2]+(o[3]?'<small>'+o[3]+'</small>':'')+'</span></button>'});
+ if(S.step==0&&!S.food)h+='<p style="margin:18px 0 8px"><b>Já usa o Skyvaz?</b> Restaure seu backup:</p>'+dropZone();
+ if(S.step>0||S.food)h+='<button class="ghost" id="back">Voltar</button>';
+ app.innerHTML=h;dzBind();
+ [].forEach.call(app.querySelectorAll(".opt"),function(b){b.onclick=function(){if(b.dataset.v=="alimento"){S.food=true;quiz();return}S.ans[q.k]=b.dataset.v;if(S.step<Q.length-1){S.step++;quiz()}else start()}});
+ var bk=document.getElementById("back");if(bk)bk.onclick=function(){if(S.step==0)S.food=false;else S.step--;quiz()};
+}
+function start(){
+ var c=N[S.ans.tipo];
+ S.prods=c.prods.map(function(p){return{n:p[0],c:p[1],p:p[2],q:p[3],v:p[4]}});
+ S.food=false;S.dia=hoje();S.hist=[];S.pay=[];S.hv="dia";S.promo=[{n:"Black Friday",t:"Feriado",d:"2026-11-27",p:30,all:true,it:[],on:true},{n:"Natal",t:"Feriado",d:"2026-12-25",p:15,all:true,it:[],on:true},{n:"Oferta explosiva",t:"Oferta explosiva",d:"",p:25,all:false,it:[0,1,2],on:false}];S.tab=S.ans.dor;S.staff=S.ans.eq=="so"?["Eu"]:["Eu","Funcionário 1"];
+ render();
+}
+function totals(){
+ var r=S.vendas.reduce(function(a,v){return a+v.t},0),l=S.vendas.reduce(function(a,v){return a+v.l},0),g=S.gastos.reduce(function(a,v){return a+v.v},0);
+ return{r:r,l:l,g:g,sobra:r-S.vendas.reduce(function(a,v){return a+v.c},0)-g};
+}
+function render(){
+ var c=N[S.ans.tipo],tabs=[["vendas","Vender"],["estoque","Estoque"],["caixa","Caixa"],["mais","Mais"]];
+ var h=brand()+'<div class="top"><div><h2>'+c.e+' '+(NOME?'Olá, '+esc(NOME)+'!':'Meu negócio')+'</h2><p style="margin:0">'+c.n+'</p><small style="color:var(--ok)">Salvo neste aparelho</small></div><button class="ghost" id="redo">Apagar e refazer</button></div><div class="tabs" role="tablist">';
+ tabs.forEach(function(t){h+='<button class="tab" role="tab" aria-selected="'+(S.tab==t[0])+'" data-t="'+t[0]+'">'+t[1]+'</button>'});
+ h+='</div>'+view(c);app.innerHTML=h;
+ [].forEach.call(app.querySelectorAll(".tab"),function(b){b.onclick=function(){S.tab=b.dataset.t;S.edit=null;S.pe=null;S.pr=null;S.en=null;render()}});
+ document.getElementById("redo").onclick=function(){var r=this;if(!r.dataset.s){r.dataset.s=1;r.textContent="Toque de novo para apagar tudo";return}try{localStorage.removeItem(K);localStorage.removeItem(NK);localStorage.removeItem(NK+"s")}catch(e){}NOME="";SK=false;S={step:0,ans:{},tab:"vendas",prods:[],vendas:[],gastos:[],staff:["Eu"],hist:[]};location.reload()};
+ save();bind(c);
+}
+function view(c){
+ var h="";
+ if(S.tab=="vendas"){
+  h+=banner();h+='<div class="card"><h2>Registrar venda</h2><label for="vp">'+c.it[0].toUpperCase()+c.it.slice(1)+'</label><select id="vp">';
+  S.prods.forEach(function(p,i){var e=preco(p);h+='<option value="'+i+'">'+esc(p.n)+' ('+(e.x?fmt(e.p)+', oferta -'+e.x+'%':fmt(p.p))+')</option>'});
+  h+='</select><div class="row"><div><label for="vq">Quantidade</label><input id="vq" type="number" min="1" value="1" inputmode="numeric"></div>';
+  if(S.staff.length>1){h+='<div><label for="vf">Quem vendeu</label><select id="vf">';S.staff.forEach(function(s){h+='<option>'+esc(s)+'</option>'});h+='</select></div>'}
+  h+='</div><p id="msg" style="margin:8px 0" role="status"></p><button class="btn" id="vend">Registrar venda</button></div>';
+  h+='<div class="card"><h2>Vendas de hoje</h2>';
+  if(!S.vendas.length)h+='<p style="margin:0">Nenhuma venda ainda. Registre a primeira acima.</p>';
+  S.vendas.slice().reverse().forEach(function(v){h+='<div class="item"><span>'+v.q+'× '+esc(v.n)+'<br><small style="color:var(--mut)">'+esc(v.f)+'</small></span><b>'+fmt(v.t)+'</b></div>'});
+  h+='</div>';
+ }else if(S.tab=="estoque"){
+  if(S.edit!=null&&S.prods[S.edit]){var e=S.prods[S.edit];h+='<div class="card" id="ed"><h2>Editar produto</h2><label for="en">Nome</label><input id="en" value="'+esc(e.n)+'"><div class="row"><div><label for="ec">Custo (R$)</label><input id="ec" type="number" step="0.01" inputmode="decimal" value="'+e.c+'"></div><div><label for="ev">Venda (R$)</label><input id="ev" type="number" step="0.01" inputmode="decimal" value="'+e.p+'"></div></div><div class="row"><div><label for="eq">Quantidade (9999 = sem limite)</label><input id="eq" type="number" inputmode="numeric" value="'+e.q+'"></div><div><label for="ex">'+c.var+'</label><input id="ex" value="'+esc(e.v||"")+'"></div></div><p id="emsg" style="margin:8px 0" role="status"></p><button class="btn" id="esave">Salvar alterações</button><div class="row"><button class="ghost" id="ecan">Cancelar</button><button class="ghost" id="edel">Excluir produto</button></div></div>'}
+  h+='<div class="card"><h2>Estoque</h2>';
+  S.prods.forEach(function(p,i){var low=p.q<=5;h+='<div class="item"><span>'+esc(p.n)+'<br><small style="color:var(--mut)">'+fmt(p.p)+'<br>'+c.var+': '+esc(p.v||"-")+'</small></span><span class="'+(low?"low":"")+'">'+(p.q>=9999?'sem limite':p.q+' un')+(low?'<br><small>acabando</small>':'')+'<br><button class="ghost" data-e="'+i+'">Editar</button></span></div>'});
+  h+='</div><div class="card"><h2>Adicionar '+c.it+'</h2><label for="np">Nome</label><input id="np"><div class="row"><div><label for="nc">Custo (R$)</label><input id="nc" type="number" step="0.01" inputmode="decimal"></div><div><label for="nv">Venda (R$)</label><input id="nv" type="number" step="0.01" inputmode="decimal"></div></div><div class="row"><div><label for="nq">Quantidade</label><input id="nq" type="number" inputmode="numeric"></div><div><label for="nx">'+c.var+'</label><input id="nx" placeholder="'+c.ph+'"></div></div><p id="msg" style="margin:8px 0" role="status"></p><button class="btn" id="add">Salvar no estoque</button></div>';
+ }else if(S.tab=="caixa"){
+  var t=totals();
+  h+='<div class="card"><p style="margin:0">Sobrou hoje</p><div class="big '+(t.sobra>=0?"pos":"neg")+'">'+fmt(t.sobra)+'</div><div class="item"><span>Entrou</span><b>'+fmt(t.r)+'</b></div><div class="item"><span>Lucro das vendas</span><b>'+fmt(t.l)+'</b></div><div class="item"><span>Saiu (gastos)</span><b>'+fmt(t.g)+'</b></div></div>';
+  h+='<div class="card"><h2>Registrar gasto</h2><label for="gd">Descrição</label><input id="gd" placeholder="Ex.: conta de luz"><label for="gv">Valor (R$)</label><input id="gv" type="number" step="0.01" inputmode="decimal"><p id="msg" style="margin:8px 0" role="status"></p><button class="btn" id="gas">Registrar gasto</button></div>';
+  h+=histo();
+  if(S.staff.length>1){var m={};S.vendas.forEach(function(v){m[v.f]=(m[v.f]||0)+v.t});h+='<div class="card"><h2>Vendas por pessoa</h2>';var ks=Object.keys(m);if(!ks.length)h+='<p style="margin:0">Aparece quando houver vendas.</p>';ks.forEach(function(k){h+='<div class="item"><span>'+esc(k)+'</span><b>'+fmt(m[k])+'</b></div>'});h+='</div>'}
+ }else{
+  
+  
+  
+  
+  h+=backupCard();h+='<div class="card"><h2>Seu nome</h2>';
+  if(S.en)h+='<label for="mn">Nome</label><input id="mn" value="'+esc(NOME)+'" maxlength="30" autocomplete="given-name"><p id="mnmsg" style="margin:8px 0" role="status"></p><button class="btn" id="mnsave">Salvar nome</button><button class="ghost" id="mncan">Cancelar</button>';
+  else h+='<div class="item"><span>'+(NOME?esc(NOME):'<small style="color:var(--mut)">Sem nome definido</small>')+'</span><button class="ghost" id="mned">'+(NOME?'Editar':'Adicionar')+'</button></div>';
+  h+='</div>';
+  h+='<div class="card"><h2>Equipe</h2>';
+  S.staff.forEach(function(s,i){
+   if(S.pe===i)h+='<div class="item" style="display:block"><label for="pn">Nome</label><input id="pn" value="'+esc(s)+'"><p id="pmsg" style="margin:8px 0" role="status"></p><button class="btn" id="psave">Salvar nome</button><button class="ghost" id="pcan">Cancelar</button>'+(i>0?'<button class="ghost" id="pdel">Excluir funcionário</button>':'')+'</div>';
+   else h+='<div class="item"><span>'+esc(s)+(i==0?' <small style="color:var(--mut)">(dono)</small>':'')+'</span><button class="ghost" data-pe="'+i+'">Editar</button></div>'});
+  h+='<label for="ns">Adicionar pessoa</label><input id="ns" placeholder="Nome"><p id="msg" style="margin:8px 0" role="status"></p><button class="btn" id="st">Adicionar à equipe</button></div>';if(S.staff.length>1)h+=descCard();h+=promoCard();
+ }
+ return h;
+}
+function bind(c){
+ function on(id,f){var e=document.getElementById(id);if(e)e.onclick=f}
+ function msg(t){var m=document.getElementById("msg");if(m)m.textContent=t}
+ function val(id){return document.getElementById(id).value}
+ bkBind();
+ on("vend",function(){
+  var p=S.prods[+val("vp")],q=Math.max(1,parseInt(val("vq"))||1);
+  if(p.q<q&&p.q<9999){msg("Só restam "+p.q+" unidades de "+p.n+".");return}
+  if(p.q<9999)p.q-=q;
+  var f=document.getElementById("vf")?val("vf"):S.staff[0];
+  var e=preco(p);S.vendas.push({n:p.n+(e.x?" (-"+e.x+"%)":""),q:q,f:f,t:e.p*q,l:(e.p-p.c)*q,c:p.c*q});render();
+ });
+ on("add",function(){
+  var n=val("np").trim(),v=parseFloat(val("nv")),q=parseInt(val("nq"));
+  if(!n||isNaN(v)||isNaN(q)||v<0||q<0){msg("Preencha nome, preço de venda e quantidade.");return}
+  S.prods.push({n:n,c:parseFloat(val("nc"))||0,p:v,q:q,v:val("nx")});render();
+ });
+ on("gas",function(){
+  var d=val("gd").trim(),v=parseFloat(val("gv"));
+  if(!d||isNaN(v)||v<=0){msg("Preencha a descrição e o valor.");return}
+  S.gastos.push({d:d,v:v});render();
+ });
+ [].forEach.call(document.querySelectorAll("[data-e]"),function(b){b.onclick=function(){S.edit=+b.dataset.e;render();var ed=document.getElementById("ed");if(ed)ed.scrollIntoView({behavior:"smooth",block:"center"})}});
+ [].forEach.call(document.querySelectorAll("[data-hv]"),function(b){b.onclick=function(){S.hv=b.dataset.hv;render()}});
+ [].forEach.call(document.querySelectorAll("[data-pe]"),function(b){b.onclick=function(){S.pe=+b.dataset.pe;render()}});
+ on("mned",function(){S.en=true;render();var i=document.getElementById("mn");if(i){i.focus();i.select()}});
+ on("mncan",function(){S.en=null;render()});
+ on("mnsave",function(){var n=val("mn").trim().slice(0,30);if(!n){document.getElementById("mnmsg").textContent="Digite o nome.";return}NOME=n;try{localStorage.setItem(NK,n);localStorage.removeItem(NK+"s")}catch(e){}SK=false;S.en=null;render()});
+ var mn=document.getElementById("mn");if(mn)mn.onkeydown=function(e){if(e.key=="Enter")document.getElementById("mnsave").click()};
+ on("pcan",function(){S.pe=null;render()});
+ on("pdel",function(){var b=document.getElementById("pdel");if(S.pe<1)return;if(!b.dataset.s){b.dataset.s=1;b.textContent="Toque de novo para excluir";return}S.staff.splice(S.pe,1);if(S.pay)S.pay.splice(S.pe,1);S.pe=null;render()});
+ on("psave",function(){var n=val("pn").trim();if(!n){document.getElementById("pmsg").textContent="Digite o nome.";return}var o=S.staff[S.pe];S.vendas.forEach(function(v){if(v.f==o)v.f=n});S.staff[S.pe]=n;S.pe=null;render()});
+ [].forEach.call(document.querySelectorAll("[data-sal]"),function(b){b.onchange=function(){var v=parseFloat(b.value);pay(+b.dataset.sal).s=(isNaN(v)||v<0)?0:v;render()}});
+ [].forEach.call(document.querySelectorAll("[data-rd]"),function(b){b.onclick=function(){var a=b.dataset.rd.split("-");pay(+a[0]).d.splice(+a[1],1);render()}});
+ on("dadd",function(){var n=val("dn").trim(),v=parseFloat(val("dv")),m=document.getElementById("dmsg");if(!n||isNaN(v)||v<=0){m.textContent="Preencha o motivo e um valor maior que zero.";return}pay(+val("dp")).d.push({n:n,v:v});render()});
+ on("pnew",function(){S.pr="new";render()});
+ [].forEach.call(document.querySelectorAll("[data-pr]"),function(b){b.onclick=function(){S.pr=+b.dataset.pr;render()}});
+ [].forEach.call(document.querySelectorAll("[data-pt]"),function(b){b.onclick=function(){var x=PR()[+b.dataset.pt];x.on=!x.on;render()}});
+ on("fcan",function(){S.pr=null;render()});
+ var fa=document.getElementById("fa");if(fa)fa.onchange=function(){document.getElementById("fl").style.display=fa.value=="1"?"none":"block"};
+ on("fsave",function(){var n=val("fn").trim(),p=parseInt(val("fp")),m=document.getElementById("pfm");if(!n||isNaN(p)||p<1||p>90){m.textContent="Preencha o nome e um desconto de 1% a 90%.";return}
+  var it=[];[].forEach.call(document.querySelectorAll("[data-fk]"),function(c){if(c.checked)it.push(+c.dataset.fk)});
+  var all=val("fa")=="1";if(!all&&!it.length){m.textContent="Marque pelo menos um produto.";return}
+  var o={n:n,t:val("ft"),d:val("fd"),p:p,all:all,it:it,on:true};
+  if(S.pr==="new")PR().push(o);else{o.on=PR()[S.pr].on;PR()[S.pr]=o}
+  S.pr=null;render()});
+ on("fdel",function(){var b=document.getElementById("fdel");if(!b.dataset.s){b.dataset.s=1;b.textContent="Toque de novo para excluir";return}PR().splice(S.pr,1);S.pr=null;render()});
+ on("ecan",function(){S.edit=null;render()});
+ on("esave",function(){var e=S.prods[S.edit],n=val("en").trim(),v=parseFloat(val("ev")),q=parseInt(val("eq")),m=document.getElementById("emsg");if(!n||isNaN(v)||isNaN(q)||v<0||q<0){m.textContent="Preencha nome, preço de venda e quantidade.";return}e.n=n;e.c=parseFloat(val("ec"))||0;e.p=v;e.q=q;e.v=val("ex");S.edit=null;render()});
+ on("edel",function(){var b=document.getElementById("edel");if(!b.dataset.s){b.dataset.s=1;b.textContent="Toque de novo para excluir";return}var ix=S.edit;S.prods.splice(ix,1);PR().forEach(function(x){x.it=x.it.filter(function(k){return k!=ix}).map(function(k){return k>ix?k-1:k})});S.edit=null;render()});
+ on("st",function(){var n=val("ns").trim();if(!n){msg("Digite o nome da pessoa.");return}S.staff.push(n);render()});
+}
+var NK="skyvaz:nome",NOME="",SK=false;
+try{NOME=localStorage.getItem(NK)||"";SK=localStorage.getItem(NK+"s")=="1"}catch(e){}
+if(load())render();else quiz();
+(function(){
+ var b=document.getElementById("brand"),L=document.getElementById("load"),A=document.getElementById("ask"),
+ ok=function(){app.classList.add("show")};
+ if(!b.animate){ok();return}
+ var rm=matchMedia("(prefers-reduced-motion:reduce)").matches,
+ r=b.getBoundingClientRect(),dy=Math.round(innerHeight*.36-(r.top+r.height/2)),
+ T=function(y,s,a){return"perspective(700px) translateY("+y+"px) scale("+s+") rotateY("+a+"deg)"},
+ done=false;
+ function go(){
+  if(done)return;done=true;A.classList.remove("on");
+  var a=b.animate([{transform:T(dy,1.9,0),offset:0},{transform:T(dy,1.9,rm?0:360),offset:.55,easing:"cubic-bezier(.65,0,.35,1)"},{transform:T(0,1,rm?0:360),offset:1}],{duration:1900,fill:"forwards"});
+  a.onfinish=ok;setTimeout(ok,3200);
+ }
+ function nome(n){NOME=n;try{localStorage.setItem(NK,n)}catch(e){}if(S.ans&&S.ans.tipo)render();else quiz();go()}
+ var a1=b.animate([{opacity:0,transform:T(dy,.5,0)},{opacity:1,transform:T(dy,1.9,0)}],{duration:900,fill:"forwards",easing:"ease-out"});
+ a1.onfinish=function(){
+  L.style.opacity=1;
+  L.firstChild.animate([{width:"0%"},{width:"100%"}],{duration:2600,fill:"both",easing:"ease-in-out"}).onfinish=function(){
+   L.style.opacity=0;
+   if(NOME||SK)go();else{A.classList.add("on");setTimeout(function(){document.getElementById("nm").focus()},500)}
+  };
+ };
+ var nm=document.getElementById("nm"),nok=document.getElementById("nok");
+ nok.onclick=function(){var n=nm.value.trim();if(!n){nm.focus();return}nome(n.slice(0,30))};
+ nm.onkeydown=function(e){if(e.key=="Enter")nok.click()};
+ document.getElementById("nskip").onclick=function(){SK=true;try{localStorage.setItem(NK+"s","1")}catch(e){}go()};
+ setTimeout(function(){if(!done&&(NOME||SK))go()},7000);
+})();
+</script>
+</body>
+</html>
